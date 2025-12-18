@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Students</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>Students</h1>
+
+    <nav class="navbar">
+        <a href="students.html" class="active">Students</a>
+        <a href="hostels.html">Hostels</a>
+        <a href="roomtypes.html">Room Types</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="allocations.html">Allocations</a>
+        <a href="payments.html">Payments</a>
+    </nav>
+
+    <div class="container forms-container">
+        <h2>Add Student</h2>
+        <form id="studentForm">
+            <input type="number" placeholder="Student ID" required>
+            <input type="text" placeholder="First Name" required>
+            <input type="text" placeholder="Last Name" required>
+            <select required>
+                <option value="">Gender</option>
+                <option>M</option>
+                <option>F</option>
+            </select>
+            <input type="text" placeholder="Phone">
+            <input type="email" placeholder="Email">
+            <button>Add Student</button>
+        </form>
+    </div>
+    
+    <div style="margin-bottom: 10px;">
+        <button onclick="filterGender('M')" style="background-color: #7ca8d4; padding: 10px;">Male Students</button>
+        <button onclick="filterGender('F')" style="background-color: #7ca8d4; padding: 10px;">Female Students</button>
+    </div>
+
+    <div class="container tables-container">
+        <h2>Student List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody id="studentsTbody"></tbody>
+
+        </table>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Rooms</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <h1>Rooms</h1>
+
+    <nav>
+        <a href="students.html">Students</a>
+        <a href="hostels.html">Hostels</a>
+        <a href="roomtypes.html">Room Types</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="allocations.html">Allocations</a>
+        <a href="payments.html">Payments</a>
+    </nav>
+
+    <div class="container">
+        <h2>Add Room</h2>
+        <form id="roomForm">
+            <input type="number" placeholder="Room ID" required>
+            <input type="number" placeholder="Hostel ID" required>
+
+            <select required>
+                <option value="">Select Room Type</option>
+                <option value="Double Sharing">Double Sharing</option>
+                <option value="Triple Sharing">Triple Sharing</option>
+            </select>
+
+            <input type="text" placeholder="Room Number" required>
+            <button type="submit">Add Room</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h2>Room List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Room ID</th>
+                    <th>Hostel ID</th>
+                    <th>Room Type</th>
+                    <th>Room Number</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

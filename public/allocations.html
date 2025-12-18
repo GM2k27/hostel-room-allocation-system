@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Allocations</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>Allocations</h1>
+
+    <nav class="navbar">
+        <a href="students.html">Students</a>
+        <a href="hostels.html">Hostels</a>
+        <a href="roomtypes.html">Room Types</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="allocations.html" class="active">Allocations</a>
+        <a href="payments.html">Payments</a>
+    </nav>
+
+    <div class="container forms-container">
+        <h2>Allocate Room</h2>
+        <form id="allocationForm">
+            <input type="number" placeholder="Allocation ID" required>
+            <input type="number" placeholder="Student ID" required>
+            <input type="number" placeholder="Room ID" required>
+            <input type="date" required>
+            <input type="date" placeholder="Checkout Date">
+            <button>Allocate</button>
+        </form>
+    </div>
+
+    <div class="container tables-container">
+        <h2>Allocation Records</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Student</th>
+                    <th>Room</th>
+                    <th>Check-in</th>
+                    <th>Checkout</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <script src="script.js"></script>
+
+</body>
+
+</html>

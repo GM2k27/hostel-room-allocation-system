@@ -1,64 +1,58 @@
--- Create database if it doesn't exist
+-- Create database
 CREATE DATABASE IF NOT EXISTS hostel_db;
-
 USE hostel_db;
 
--- Create hostels table
-CREATE TABLE IF NOT EXISTS hostels (
+-- ================= HOSTELS =================
+CREATE TABLE hostels (
     hostel_id INT PRIMARY KEY,
     hostel_name VARCHAR(100) NOT NULL,
     location VARCHAR(200),
     total_rooms INT
 );
 
--- Create students table
-CREATE TABLE IF NOT EXISTS students (
-    student_id VARCHAR(20) PRIMARY KEY,
-    student_name VARCHAR(100) NOT NULL,
-    email VARCHAR(100),
+-- ================= STUDENTS =================
+CREATE TABLE students (
+    student_id INT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    gender CHAR(1) CHECK (gender IN ('M','F')),
     phone VARCHAR(15),
-    gender ENUM('Male', 'Female', 'Other')
+    email VARCHAR(100)
 );
 
--- Create room_types table
-CREATE TABLE IF NOT EXISTS room_types (
-    room_type_id INT PRIMARY KEY,
-    room_type_name VARCHAR(50) NOT NULL,
-    capacity INT NOT NULL,
-    price_per_semester DECIMAL(10, 2)
+-- ================= ROOM TYPES =================
+CREATE TABLE roomtypes (
+    type_name VARCHAR(50) PRIMARY KEY,
+    default_price DECIMAL(10,2)
 );
 
--- Create rooms table
-CREATE TABLE IF NOT EXISTS rooms (
+-- ================= ROOMS =================
+CREATE TABLE rooms (
     room_id INT PRIMARY KEY,
     hostel_id INT,
-    room_type_id INT,
-    room_number VARCHAR(20) NOT NULL,
-    floor INT,
-    is_available BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (hostel_id) REFERENCES hostels(hostel_id) ON DELETE CASCADE,
-    FOREIGN KEY (room_type_id) REFERENCES room_types(room_type_id) ON DELETE SET NULL
+    type_name VARCHAR(50),
+    room_number VARCHAR(20),
+    status VARCHAR(20) DEFAULT 'Available',
+    FOREIGN KEY (hostel_id) REFERENCES hostels(hostel_id)
 );
 
--- Create allocations table
-CREATE TABLE IF NOT EXISTS allocations (
-    allocation_id INT PRIMARY KEY AUTO_INCREMENT,
-    student_id VARCHAR(20),
+-- ================= ALLOCATIONS =================
+CREATE TABLE allocations (
+    allocation_id INT PRIMARY KEY,
+    student_id INT,
     room_id INT,
     allocation_date DATE,
     checkout_date DATE,
-    status ENUM('Active', 'Completed', 'Cancelled') DEFAULT 'Active',
-    FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
-    FOREIGN KEY (room_id) REFERENCES rooms(room_id) ON DELETE CASCADE
+    FOREIGN KEY (student_id) REFERENCES students(student_id),
+    FOREIGN KEY (room_id) REFERENCES rooms(room_id)
 );
 
--- Create payments table
-CREATE TABLE IF NOT EXISTS payments (
-    payment_id INT PRIMARY KEY AUTO_INCREMENT,
-    allocation_id INT,
+-- ================= PAYMENTS =================
+CREATE TABLE payments (
+    payment_id INT PRIMARY KEY,
+    student_id INT,
+    amount DECIMAL(10,2),
     payment_date DATE,
-    amount DECIMAL(10, 2),
-    payment_method VARCHAR(50),
-    status ENUM('Pending', 'Completed', 'Failed') DEFAULT 'Pending',
-    FOREIGN KEY (allocation_id) REFERENCES allocations(allocation_id) ON DELETE CASCADE
+    description VARCHAR(255),
+    FOREIGN KEY (student_id) REFERENCES students(student_id)
 );

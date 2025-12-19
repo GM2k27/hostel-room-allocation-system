@@ -11,23 +11,33 @@ function setupPage(page, formId, api, fields, renderRow) {
         data.forEach(row => tbody.innerHTML += renderRow(row));
     }
 
-    form.addEventListener('submit', async e => {
-        e.preventDefault();
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
 
-        const payload = {};
-        fields.forEach((f, i) => payload[f] = form[i].value);
+    const payload = {};
+    fields.forEach((f, i) => payload[f] = form[i].value);
 
-        await fetch(api, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-
-        form.reset();
-        load();
+    const res = await fetch(api, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
 
+    if (!res.ok) {
+      let msg = 'Operation failed';
+      try {
+        const data = await res.json();
+        msg = data.error || msg;
+      } catch (e) { }
+      alert(msg);
+      return;
+    }
+
+    form.reset();
     load();
+  });
+
+  load();
 }
 //students
 
@@ -55,6 +65,27 @@ function filterGender(gender) {
   renderStudents(allStudents.filter(s => s.gender === gender));
 }
 
+async function loadAllocatedStudents() {
+  const res = await fetch('http://localhost:3000/reports/students-with-rooms');
+  const data = await res.json();
+
+  const tbody = document.getElementById('studentsTbody');
+  tbody.innerHTML = '';
+
+  data.forEach(s => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${s.student_id}</td>
+        <td>${s.first_name} ${s.last_name}</td>
+        <td>${s.gender}</td>
+        <td>${s.phone || ''}</td>
+        <td>${s.email || ''}</td>
+      </tr>
+    `;
+  });
+}
+
+
 /* STUDENTS PAGE LOGIC */
 if (location.href.includes('students.html')) {
   const form = document.getElementById('studentForm');
@@ -64,6 +95,8 @@ if (location.href.includes('students.html')) {
     allStudents = await res.json();
     renderStudents(allStudents);
   }
+
+
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
@@ -118,6 +151,36 @@ setupPage(
 );
 
 /* ROOMS (NO STATUS INPUT) */
+async function loadRoomsWithHostels() {
+  const res = await fetch('http://localhost:3000/reports/rooms-hostels');
+  const data = await res.json();
+
+  const table = document.querySelector('table');
+  const thead = table.querySelector('thead');
+  const tbody = table.querySelector('tbody');
+
+  thead.innerHTML = `
+        <tr>
+            <th>Room ID</th>
+            <th>Room Number</th>
+            <th>Hostel Name</th>
+            <th>Status</th>
+        </tr>
+    `;
+
+  tbody.innerHTML = '';
+
+  data.forEach(r => {
+    tbody.innerHTML += `
+        <tr>
+            <td>${r.room_id}</td>
+            <td>${r.room_number}</td>
+            <td>${r.hostel_name}</td>
+            <td>${r.status}</td>
+        </tr>`;
+  });
+}
+
 setupPage(
     'rooms.html',
     'roomForm',
@@ -133,6 +196,38 @@ setupPage(
 );
 
 /* ALLOCATIONS */
+async function loadPayments() {
+  const res = await fetch('http://localhost:3000/payments');
+  const data = await res.json();
+
+  const table = document.querySelector('table');
+  const thead = table.querySelector('thead');
+  const tbody = document.getElementById('paymentsTbody');
+
+  thead.innerHTML = `
+    <tr>
+      <th>ID</th>
+      <th>Student ID</th>
+      <th>Amount</th>
+      <th>Date</th>
+      <th>Description</th>
+    </tr>
+  `;
+
+  tbody.innerHTML = '';
+  data.forEach(p => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${p.payment_id}</td>
+        <td>${p.student_id}</td>
+        <td>${p.amount}</td>
+        <td>${p.payment_date}</td>
+        <td>${p.description || ''}</td>
+      </tr>
+    `;
+  });
+}
+
 setupPage(
     'allocations.html',
     'allocationForm',

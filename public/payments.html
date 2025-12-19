@@ -33,6 +33,8 @@
     </div>
 
     <div class="container tables-container">
+        <button onclick="loadTotalPayments()" style="background-color: #7ca8d4; padding: 10px;">Total Payment Per Student</button>
+
         <h2>Payment Records</h2>
         <table>
             <thead>
@@ -44,7 +46,8 @@
                     <th>Description</th>
                 </tr>
             </thead>
-            <tbody></tbody>
+            <tbody id="paymentsTbody"></tbody>
+
         </table>
     </div>
     <script src="script.js"></script>
